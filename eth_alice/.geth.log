@@ -1,0 +1,44 @@
+INFO [02-24|15:43:10.976] Maximum peer count                       ETH=50 LES=0 total=50
+INFO [02-24|15:43:10.977] Smartcard socket not found, disabling    err="stat /run/pcscd/pcscd.comm: no such file or directory"
+INFO [02-24|15:43:10.977] Set global gas cap                       cap=25000000
+INFO [02-24|15:43:10.977] Allocated trie memory caches             clean=256.00MiB dirty=256.00MiB
+INFO [02-24|15:43:10.977] Allocated cache and file handles         database=/home/baptiste/domus/ethereum/sesan_v2/eth_alice/geth/chaindata cache=512.00MiB handles=2048
+INFO [02-24|15:43:11.018] Opened ancient database                  database=/home/baptiste/domus/ethereum/sesan_v2/eth_alice/geth/chaindata/ancient
+INFO [02-24|15:43:11.018] Initialised chain configuration          config="{ChainID: 1222 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: 0 EIP155: 0 EIP158: 0 Byzantium: 0 Constantinople: 0 Petersburg: 0 Istanbul: 0, Muir Glacier: <nil>, YOLO v2: <nil>, Engine: clique}"
+INFO [02-24|15:43:11.018] Initialising Ethereum protocol           versions="[65 64 63]" network=1789 dbversion=8
+INFO [02-24|15:43:11.019] Loaded most recent local header          number=18 hash="a560d5…eba578" td=37 age=4h6m44s
+INFO [02-24|15:43:11.019] Loaded most recent local full block      number=18 hash="a560d5…eba578" td=37 age=4h6m44s
+INFO [02-24|15:43:11.019] Loaded most recent local fast block      number=0  hash="1d7e4c…d17042" td=1  age=51y10mo3w
+INFO [02-24|15:43:11.022] Loaded local transaction journal         transactions=0 dropped=0
+INFO [02-24|15:43:11.022] Regenerated local transaction journal    transactions=0 accounts=0
+WARN [02-24|15:43:11.022] Switch sync mode from fast sync to full sync 
+INFO [02-24|15:43:11.022] Starting peer-to-peer node               instance=Geth/v1.9.25-stable-e7872729/linux-amd64/go1.15.6
+INFO [02-24|15:43:11.498] New local node record                    seq=5 id=ca8ba16f323de886 ip=127.0.0.1 udp=30305 tcp=30305
+INFO [02-24|15:43:11.502] IPC endpoint opened                      url=/home/baptiste/domus/ethereum/sesan_v2/eth_alice/geth.ipc
+INFO [02-24|15:43:11.503] Started P2P networking                   self=enode://5c426da5fedf3a540fc0551842a5abfffbcd7115f5862020e976dfac05dfb7981fdff9b68883b9178ee69932f93524608d68d59333309854b7f18417b45320d5@127.0.0.1:30305
+INFO [02-24|15:43:11.576] Etherbase automatically configured       address=0xdE57B7e1D1624ACA9Ad0619992c55666c3c4812A
+INFO [02-24|15:43:26.635] Looking for peers                        peercount=0 tried=15 static=0
+INFO [02-24|15:43:38.652] Looking for peers                        peercount=0 tried=0  static=0
+INFO [02-24|15:43:49.190] Looking for peers                        peercount=0 tried=1  static=0
+INFO [02-24|15:44:02.740] Looking for peers                        peercount=0 tried=7  static=0
+INFO [02-24|15:44:13.316] Looking for peers                        peercount=0 tried=1  static=0
+INFO [02-24|15:44:24.191] Looking for peers                        peercount=0 tried=0  static=0
+INFO [02-24|15:44:34.367] Looking for peers                        peercount=0 tried=3  static=0
+INFO [02-24|15:44:44.424] Looking for peers                        peercount=0 tried=0  static=0
+INFO [02-24|15:44:54.616] Looking for peers                        peercount=0 tried=0  static=0
+INFO [02-24|15:45:05.190] Looking for peers                        peercount=1 tried=1  static=0
+INFO [02-24|15:45:15.214] Looking for peers                        peercount=1 tried=1  static=0
+INFO [02-24|15:45:25.633] Looking for peers                        peercount=1 tried=0  static=0
+INFO [02-24|15:45:35.642] Looking for peers                        peercount=1 tried=0  static=0
+INFO [02-24|15:48:11.082] Got interrupt, shutting down... 
+INFO [02-24|15:48:11.083] IPC endpoint closed                      url=/home/baptiste/domus/ethereum/sesan_v2/eth_alice/geth.ipc
+INFO [02-24|15:48:11.083] Looking for peers                        peercount=0 tried=0  static=0
+INFO [02-24|15:48:11.083] Ethereum protocol stopped 
+INFO [02-24|15:48:11.083] Transaction pool stopped 
+INFO [02-24|15:48:11.083] Writing cached state to disk             block=18 hash="a560d5…eba578" root="089527…25c32e"
+INFO [02-24|15:48:11.083] Persisted trie from memory database      nodes=0 size=0.00B time="4.856µs" gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [02-24|15:48:11.083] Writing cached state to disk             block=17 hash="e7b9ac…1be5df" root="089527…25c32e"
+INFO [02-24|15:48:11.083] Persisted trie from memory database      nodes=0 size=0.00B time="1.187µs" gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [02-24|15:48:11.083] Writing clean trie cache to disk         path=/home/baptiste/domus/ethereum/sesan_v2/eth_alice/geth/triecache threads=2
+INFO [02-24|15:48:11.084] Persisted the clean trie cache           path=/home/baptiste/domus/ethereum/sesan_v2/eth_alice/geth/triecache elapsed="796.705µs"
+INFO [02-24|15:48:11.084] Blockchain stopped 

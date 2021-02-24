@@ -1,7 +1,3 @@
-from		enum		import		Enum, auto
-
-
-
 def final_exit():
 	exit()
 
@@ -24,9 +20,9 @@ DEFAULT_CHAIN_PERIOD 				= 30
 
 
 #################################   SYSTEM   ####################
-ROOT 								= "/home/baptiste/domus/ethereum/sesan_v2"#
-CONTRACT_SOURCES_FOLDER				= "sol_src"
-PYTHON_SOURCES_FOLDER				= "py_src"
+ROOT 								= "."						#
+CONTRACT_SOURCES_FOLDER				= "sol_src" 				#
+PYTHON_SOURCES_FOLDER				= "py_src" 					#
 																#
 CONFIGURATION_FILENAME				= ".conf.json"				#
 LOG_FILENAME 						= ".node.log"				#
@@ -90,13 +86,13 @@ S_EXIT 								= 3
 #################################   BALISE COMMUNICATION   #####
 
 def __BC__auto__():
-	if not hasattr(auto, "i"):
-		auto.i = 0
+	if not hasattr(__BC__auto__, "i"):
+		__BC__auto__.i = 0
 	else:
-		auto.i += 1
-	if (auto.i > 255):
+		__BC__auto__.i += 1
+	if (__BC__auto__.i > 255):
 		raise "Too much BC code"
-	return auto.i
+	return __BC__auto__.i
 
 # SYSTEM							  00 - FF
 BC_ERROR 							= __BC__auto__() 			# 0x00

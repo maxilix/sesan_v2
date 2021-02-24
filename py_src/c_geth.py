@@ -17,27 +17,6 @@ from		constants			import		*
 
 
 
-"""
-def enode_to_bytes(enodeString):
-	bEnode = int(enodeString.split('@')[0][8:],16).to_bytes(64, byteorder='big')
-	bIp = bytes([int(enodeString.split('@')[1].split(':')[0].split('.')[i]) for i in range(4)])
-	bPort = int(enodeString.split('@')[1].split(':')[1]).to_bytes(2, byteorder='big')
-	return (bEnode, bIp, bPort)
-
-
-def bytes_to_enode(bEnode, bIp, bPort):
-	r = "enode://"
-	r+= "{0:x}".format(int.from_bytes(bEnode, byteorder='big'))
-	r+= "@"
-	for i in bIp:
-		r+= str(i)
-		r+= "."
-	r = r[:-1] + ":"
-	r+= str(int.from_bytes(bPort, byteorder='big'))
-	return r
-"""
-
-
 class Geth(threading.Thread):
 
 
@@ -53,11 +32,6 @@ class Geth(threading.Thread):
 		self.user 				= user
 		self.log 				= None
 		self.proc 				= None
-
-		self.enodeS 			= ""
-		self.addressS 			= ""
-
-		self.guestEnodeS 		= []
 
 		self.eigentrust			= None
 		self.eigentrustEvents 	= None
@@ -109,8 +83,8 @@ class Geth(threading.Thread):
 			self.status = S_ERROR
 			self.end()
 			return
-		self.enodeS 	= self.w3.geth.admin.node_info()["enode"]
-		self.addressS 	= self.w3.eth.defaultAccount
+		#self.enodeS 	= self.w3.geth.admin.node_info()["enode"]
+		#self.addressS 	= self.w3.eth.defaultAccount
 
 		# load eigentrust contract
 		self.__load_eigentrust()
@@ -147,6 +121,26 @@ class Geth(threading.Thread):
 			else:
 				console.warn("geth subprocess already terminate with return code {0}".format(self.proc.poll()))
 
+		"""
+		# last logs
+		newLog = self.log.readline().split(' ')
+		while (newLog != ['']):
+			index = 2
+			message = ""
+			while ((index < len(newLog)) and (newLog[index] != '') and ('"' not in newLog[index]) and ("=" not in newLog[index])):
+				message += newLog[index]
+				message += ' '
+				index += 1
+			if   (newLog[0] == "WARN"):
+				console.warn(message)
+			elif (newLog[0] == "INFO"):
+				console.info(message)
+			else:
+				console.error(message)
+			newLog = self.log.readline().split(' ')
+		"""
+		self.log.close()
+
 		console.info("geth closed")
 
 	##################################################################################################
@@ -156,28 +150,60 @@ class Geth(threading.Thread):
 	def update(self):
 		time.sleep(UPDATE_WAITING_TIME)
 
+		newLog = self.log.readline()
+		if   "New local node record" in newLog:
+			console.info("enode refresh")
+		elif "Successfully sealed new block" in newLog:
+			console.print("new block sealed : {0}".format(self.get_blocknumber()))
+		elif "Block sealing failed" in newLog:
+			console.warn("block sealing failed")
+			self.forge(False)
+		else:
+			pass			
 
-		if self.guestEnodeS != []:
-			pass
+		"""
+		if (newLog != ['']):
+			index = 2
+			message = ""
+			while ((index < len(newLog)) and (newLog[index] != '') and ('"' not in newLog[index]) and ("=" not in newLog[index])):
+				message += newLog[index]
+				message += ' '
+				index += 1
+
+
+			if (message == "New local node record "):
+				self.enodeS = self.w3.geth.admin.node_info()["enode"]
+
+
+			if (message != "Looking for peers "):
+				if   (newLog[0] == "WARN"):
+					console.warn(message)
+				elif (newLog[0] == "INFO"):
+					console.info(message)
+				else:
+					console.error(message)
 
 
 
 
 
 
-		who = "{0}-eigenTrust".format(self.user[0])
-		# NewUser event
-		news = self.eigentrustEvents["NewUser"].get_new_entries()
-		for e in news:
-			console.print("{0} : {1} added".format(e["args"]["index"],e["args"]["user"]) , who = who)
 
-		# Vote event
-		news = self.eigentrustEvents["Vote"].get_new_entries()
-		for e in news:
-			if (e["args"]["vote"]):
-				console.print("{0} vote for {1}".format(e["args"]["from"],e["args"]["to"]) , who = who)
-			else:
-				console.print("{0} vote against {1}".format(e["args"]["from"],e["args"]["to"]) , who = who)
+		if (self.eigentrust != None and GETH_EIGENTRUST_SPY):
+			who = "{0}-eigenTrust".format(self.user[0])
+			# NewUser event
+			news = self.eigentrustEvents["NewUser"].get_new_entries()
+			for e in news:
+				console.print("{0} : {1} added".format(e["args"]["index"],e["args"]["user"]) , who = who)
+
+			# Vote event
+			news = self.eigentrustEvents["Vote"].get_new_entries()
+			for e in news:
+				if (e["args"]["vote"]):
+					console.print("{0} vote for {1}".format(e["args"]["from"],e["args"]["to"]) , who = who)
+				else:
+					console.print("{0} vote against {1}".format(e["args"]["from"],e["args"]["to"]) , who = who)
+		"""
 
 	##################################################################################################
 	#
@@ -200,6 +226,7 @@ class Geth(threading.Thread):
 
 		with open("{0}/eth_{1}/{2}".format(ROOT, self.user[0], GETH_LOG_FILENAME),'w') as self.log:
 			self.proc = subprocess.Popen(cmdlist, stdin = None, stdout = None, stderr = self.log, shell = False)
+		self.log = open("{0}/eth_{1}/{2}".format(ROOT, self.user[0], GETH_LOG_FILENAME),'r')
 
 
 		time.sleep(UPDATE_WAITING_TIME)
@@ -291,19 +318,62 @@ class Geth(threading.Thread):
 
 	##################################################################################################
 	#
-	#	peer connexion
+	#	mannagment
 	#
 	def add_peer(self, enodeS):
 		try:
 			self.w3.geth.admin.add_peer(enodeS)
-
 		except:
-			pass
+			console.warn("wrong enode, peer not added")
 
-	def lock_coinbase(self):
-		self.w3.geth.personal.lock_account(self.w3.eth.defaultAccount)
-		console.info("coinbase account locked")
+	def remove_peer(self, enodeS):
+		try:
+			self.w3.geth.admin.remove_peer(enodeS)
+		except:
+			console.warn("wrong enode, peer not removed")
+
+	def forge(self, state, seconde = 0):
+		if (state and seconde != 0):
+			self.unlock_coinbase(seconde)
+			self.w3.geth.miner.start()
+			console.info("forge started at block {0}".format(self.w3.eth.blockNumber))
+		else:
+			self.w3.geth.miner.stop()
+			self.lock_coinbase()
+			console.info("forge stopped at block {0}".format(self.w3.eth.blockNumber))
 	##################################################################################################
+
+	##################################################################################################
+	#
+	#	getters
+	#
+	def get_enodeS(self):
+		enodeS = self.w3.geth.admin.node_info()["enode"]
+		ip = tools.get_public_ip()
+		if ip not in enodeS:
+			console.warn("public ip is {0} and enode ip is {1}".format(ip, enodeS.split('@')[1].split(':')[0]))
+		return enodeS
+
+	def get_enodeB(self):
+		return tools.enode_StoB(self.get_enodeS())
+
+	def get_peer_number(self):
+		return len(self.w3.geth.admin.peers())
+
+	def get_peer_enodesB(self,number=0):
+		enodeS_list = []
+		for peer in self.w3.geth.admin.peers():
+			enodeS_list.append(peer["enode"])
+		return enodeS_list
+
+
+	def get_blocknumber(self):
+		return self.w3.eth.blockNumber
+
+	##################################################################################################
+
+
+
 
 
 	"""

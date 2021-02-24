@@ -53,15 +53,16 @@ def new():
 
 
 
-
-
-print("\nWelcome to the server management console\n")
+print()
+print(get_public_ip())
+print("Welcome to sesan_v2")
+print()
 print("- Use help() to see informations")
 print("- Use 'tail -f ./{0}' in for log info".format(LOG_FILENAME))
+print()
 
 
-
-#new()
+new()
 time.sleep(1)
 
 

@@ -6,7 +6,7 @@ from		constants 	import 		*
 
 
 
-trackerIP = "127.0.0.1"
+tracker = ("127.0.0.1",30304)
 
 addressString 	= "0xea45041a6f49d1b4551861c9379fd7c475d22909"
 enodeString 	= "enode://073d81a284a7579d2716c2efb0dbed1724208fcdd8e854ccfb552eab2f418e4b88a6cd6b658ef7aa6ca4b3db2d48ef395bc66528f2ffcf8c7a0bbef624064f39@127.0.0.1:30303"
@@ -26,8 +26,8 @@ frame += [BC_END_IDENTITY]
 
 
 udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM);
-udpSocket.bind(('', CLIENT_PORT));
+#udpSocket.bind(('', CLIENT_PORT));
 
-udpSocket.sendto(bytes(frame), (trackerIP,TRACKER_PORT));
+udpSocket.sendto(bytes(frame), tracker);
 
 

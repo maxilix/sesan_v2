@@ -23,18 +23,15 @@ class Tracker(threading.Thread):
 	#
 	#	Constructor
 	#
-	def __init__(self, username, enodeString, addressString, eigentrust, dealer):
+	def __init__(self, username, enodeS, addressS, eigentrust, dealer):
 		threading.Thread.__init__(self, daemon = True)
 
 		self.status 		= S_INITIAL
 		self.username  		= username
 
-		self.enodeString 	= enodeString
-		self.addressString 	= addressString
-		self.nodekey 		= None
-		self.ip 			= None
-		self.gethPort 		= None
-		self.address 		= None
+		self.enodeS 		= enodeS
+		self.addressS 		= addressS
+
 		self.udpGuestSoc 	= None
 
 		self.eigentrust 	= eigentrust
@@ -66,6 +63,7 @@ class Tracker(threading.Thread):
 		if (self.status == S_ERROR):
 			return
 
+		"""
 		# check valid enode string
 		if tools.check_enode(self.enodeString):
 			# extract byte informations
@@ -88,7 +86,7 @@ class Tracker(threading.Thread):
 			self.status = S_ERROR
 			self.end()
 			return
-
+		"""
 
 
 
